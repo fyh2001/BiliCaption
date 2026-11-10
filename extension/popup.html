@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>B 站字幕 · 菜单栏</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <main>
+    <div class="brand"><span class="brand-icon" aria-hidden="true">字</span><div><h1>B 站字幕</h1><p class="subtitle">小说继续播，字幕在菜单栏</p></div></div>
+    <div class="status" role="status"><span id="dot" class="dot"></span><span id="connection">正在检查本机连接…</span></div>
+    <div class="video-card"><span class="label">视频页面</span><p id="video-title">正在读取…</p><p id="detail" class="muted"></p></div>
+    <button id="resync" type="button">重新同步字幕</button>
+    <button id="reload" class="secondary" type="button">刷新 B 站页面</button>
+    <p id="message" class="message" role="status"></p>
+    <details><summary>字幕、队列与 B 站账号</summary><ol><li>先打开 <strong>BiliCaption</strong> 菜单栏程序，在其中开启自动字幕并选择 AI／人工字幕优先。</li><li>扩展读取 B 站已有字幕。没有可用轨道时，不会录音或自行生成 AI 字幕。</li><li>在菜单栏查看分集、保存听单，或读取已登录账号的收藏夹和稍后再看。</li><li>只有点击保存到 B 站时才修改收藏；分 P 视频在 B 站按整个视频收藏。</li><li>保持视频标签页打开。首次安装或更新后刷新一次视频页。</li></ol><p>登录凭据留在 B 站页面，只把字幕、播放状态和列表数据发送至本机。</p></details>
+    <footer>本机同步 · 字幕不会上传</footer>
+  </main>
+  <script src="core.js"></script><script src="popup.js"></script>
+</body>
+</html>

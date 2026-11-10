@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "B 站字幕 · 菜单栏",
+  "version": "2.1.13",
+  "description": "B 站字幕、分集队列、倍速与收藏夹，在本机 macOS 菜单栏中同步控制。",
+  "minimum_chrome_version": "111",
+  "permissions": ["storage", "scripting"],
+  "host_permissions": ["https://www.bilibili.com/*", "http://127.0.0.1:17373/*"],
+  "background": {"service_worker": "background.js"},
+  "action": {"default_title": "B 站字幕 · 菜单栏", "default_popup": "popup.html"},
+  "content_scripts": [
+    {
+      "matches": ["https://www.bilibili.com/*"],
+      "js": ["page-bundle.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://www.bilibili.com/*"],
+      "js": ["content-bundle.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ]
+}

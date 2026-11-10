@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>B站字幕</string>
+	<key>CFBundleExecutable</key>
+	<string>BiliCaption</string>
+	<key>CFBundleIdentifier</key>
+	<string>local.fangyaohua.BiliCaption</string>
+	<key>CFBundleName</key>
+	<string>BiliCaption</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.1.13</string>
+	<key>CFBundleVersion</key>
+	<string>34</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>在你开启本机转写时，捕获所选浏览器声音以生成字幕。</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>在你开启本机转写时，仅使用设备端语音识别生成字幕，不上传音频。</string>
+</dict>
+</plist>
