@@ -6,6 +6,7 @@
     <img alt="macOS 13+" src="https://img.shields.io/badge/macOS-13%2B-111111?logo=apple&logoColor=white">
     <img alt="Swift" src="https://img.shields.io/badge/Swift-5-F05138?logo=swift&logoColor=white">
     <img alt="Manifest V3" src="https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white">
+    <a href="https://github.com/fyh2001/BiliCaption/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/fyh2001/BiliCaption?logo=github"></a>
     <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-4B8BBE.svg"></a>
   </p>
   <p>
@@ -64,7 +65,17 @@ BiliCaption 是一个面向 macOS 的 B 站字幕伴侣。它通过一个轻量 
 - Node.js 18+（只用于构建浏览器扩展和运行测试）
 - Chrome 111+、Arc 或其他兼容 Manifest V3 的 Chromium 浏览器
 
-### 1. 构建
+### 下载预编译版本（推荐）
+
+从 [最新 Release](https://github.com/fyh2001/BiliCaption/releases/latest) 下载 `BiliCaption-2.1.13-macOS-universal.zip`，解压后保持 `BiliCaption.app` 与 `extension` 文件夹放在同一目录。
+
+1. 打开 `BiliCaption.app`；应用会常驻 macOS 菜单栏。
+2. 按下方“加载扩展”的步骤，在 Chrome 或 Arc 中选择压缩包里的 `extension` 文件夹。
+3. 打开 B 站视频并刷新页面，应用和扩展即可通过本次发行包内的配对密钥连接。
+
+版本包同时支持 Apple Silicon 与 Intel Mac，采用本机签名，未经过 Apple 公证或 App Store 签名。首次打开时，macOS 可能要求你在“系统设置 → 隐私与安全性”中允许本次打开。
+
+### 从源码构建
 
 ```bash
 git clone https://github.com/fyh2001/BiliCaption.git
@@ -82,11 +93,11 @@ chmod +x scripts/build.sh scripts/test.sh
 
 桥接密钥位于 `.build/bridge-token`，已经在 `.gitignore` 中排除。应用和扩展必须来自同一次构建。
 
-### 2. 安装应用
+### 安装源码构建
 
 打开 `.build/BiliCaption.app`。应用没有 Dock 窗口，会常驻菜单栏。第一次 macOS 可能提示本地构建应用安全性，请在“系统设置 → 隐私与安全性”中允许本次构建，或使用 Xcode Command Line Tools 重新构建。
 
-### 3. 加载扩展
+### 加载扩展
 
 1. 在 Chrome 或 Arc 打开 `chrome://extensions`。
 2. 开启“开发者模式”。
@@ -96,7 +107,7 @@ chmod +x scripts/build.sh scripts/test.sh
 
 如果替换了应用或重新构建，请同时重新加载 `.build/extension`，确保两边使用相同的桥接密钥。
 
-### 4. 开始收听
+### 开始收听
 
 打开 B 站视频后，菜单栏图标会显示实时字幕。点击图标可调整字幕与外观，也可以进入“听书控制台”管理章节、听单、倍速和字幕来源。
 
