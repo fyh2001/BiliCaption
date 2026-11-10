@@ -71,6 +71,7 @@ final class GlassSettingsPopover: NSObject {
         guard glassMaterial != supported else { return }
         glassMaterial = supported
         panel.glassMaterial = supported
+        #if compiler(>=6.2)
         if #available(macOS 26.0, *), let glass = material as? NSGlassEffectView {
             // AppKit caches the active appearance in an existing glass view.
             // Recreate only its surface when changing materials; keep the same
@@ -91,6 +92,7 @@ final class GlassSettingsPopover: NSObject {
             if let responder { panel.makeFirstResponder(responder) }
             applyMaterial()
         }
+        #endif
     }
 
     func show(relativeTo rect: NSRect, of view: NSView, preferredEdge edge: NSRectEdge) {
@@ -143,6 +145,7 @@ final class GlassSettingsPopover: NSObject {
         content.autoresizingMask = [.width, .height]
         legacyTint = nil
 
+        #if compiler(>=6.2)
         if #available(macOS 26.0, *) {
             let glass = NSGlassEffectView(frame: bounds)
             // Only the explicit material picker changes this style.
@@ -171,6 +174,26 @@ final class GlassSettingsPopover: NSObject {
             material = blur
             legacyTint = tint
         }
+        #else
+        let root = NSView(frame: bounds)
+        root.wantsLayer = true
+        root.layer?.cornerRadius = 20
+        root.layer?.masksToBounds = true
+        let blur = NSVisualEffectView(frame: bounds)
+        blur.material = .popover
+        blur.blendingMode = .behindWindow
+        blur.state = .active
+        blur.autoresizingMask = [.width, .height]
+        let tint = NSView(frame: bounds)
+        tint.wantsLayer = true
+        tint.autoresizingMask = [.width, .height]
+        root.addSubview(blur)
+        root.addSubview(tint)
+        root.addSubview(content)
+        host.view = root
+        material = blur
+        legacyTint = tint
+        #endif
         host.addChild(controller)
         panel.contentViewController = host
         panel.setContentSize(size)
@@ -180,6 +203,7 @@ final class GlassSettingsPopover: NSObject {
 
     private func applyMaterial() {
         let density = CGFloat((100 - transparency) / 90)
+        #if compiler(>=6.2)
         if #available(macOS 26.0, *), let glass = material as? NSGlassEffectView {
             GlassAppearance.applyTransparency(transparency, to: glass)
         } else if let blur = material as? NSVisualEffectView {
@@ -187,6 +211,13 @@ final class GlassSettingsPopover: NSObject {
             blur.alphaValue = 0.20 + density * 0.80
             legacyTint?.layer?.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(density * 0.5).cgColor
         }
+        #else
+        if let blur = material as? NSVisualEffectView {
+            // Here the effect and content are siblings; only the backdrop fades.
+            blur.alphaValue = 0.20 + density * 0.80
+            legacyTint?.layer?.backgroundColor = NSColor.windowBackgroundColor.withAlphaComponent(density * 0.5).cgColor
+        }
+        #endif
     }
 
     private func anchorRectOnScreen() -> NSRect? {

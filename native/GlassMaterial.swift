@@ -16,7 +16,13 @@ enum GlassMaterial: String, CaseIterable {
 
     var isAvailable: Bool {
         if self == .soft { return true }
-        if #available(macOS 26.0, *) { return true }
+        if #available(macOS 26.0, *) {
+            #if compiler(>=6.2)
+            return true
+            #else
+            return false
+            #endif
+        }
         return false
     }
 
@@ -25,16 +31,17 @@ enum GlassMaterial: String, CaseIterable {
         return value.isAvailable ? value : .soft
     }
 
+    #if compiler(>=6.2)
     @available(macOS 26.0, *)
-    var nativeStyle: NSGlassEffectView.Style {
-        self == .soft ? .regular : .clear
-    }
+    var nativeStyle: NSGlassEffectView.Style { self == .soft ? .regular : .clear }
+    #endif
 }
 
 /// Both native glass surfaces use the same transparency scale. Their chosen
 /// material and stored transparency remain independent. At 100 there is no
 /// app-added tint; the system still supplies its own adaptive glass effect.
 enum GlassAppearance {
+    #if compiler(>=6.2)
     @available(macOS 26.0, *)
     static func applyTransparency(_ value: Double, to glass: NSGlassEffectView) {
         let transparency = value.isFinite ? min(100, max(10, value)) : 45
@@ -45,6 +52,7 @@ enum GlassAppearance {
         // The content view includes text and controls; fade only the tint.
         glass.alphaValue = 1
     }
+    #endif
 }
 
 /// Compatibility workaround for AppKit's inactive-window glass fallback.

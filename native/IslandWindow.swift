@@ -253,6 +253,7 @@ private final class IslandRootView: NSView {
     /// Put content inside a single native glass surface. A second visual-effect
     /// view in contentView would cover the glass with a separate frosted material.
     func makeWindowContentView() -> NSView {
+        #if compiler(>=6.2)
         guard #available(macOS 26.0, *) else { return self }
         (nativeGlass as? NSGlassEffectView)?.contentView = nil
         let glass = NSGlassEffectView(frame: bounds)
@@ -264,6 +265,9 @@ private final class IslandRootView: NSView {
         tint.isHidden = true
         applyTheme()
         return glass
+        #else
+        return self
+        #endif
     }
 
     override func updateTrackingAreas() {
@@ -333,9 +337,11 @@ private final class IslandRootView: NSView {
         contentContainer.frame = bounds
         surface.layer?.cornerRadius = min(bounds.height / 2, expanded ? 26 : 23)
         tint.layer?.cornerRadius = surface.layer?.cornerRadius ?? 0
+        #if compiler(>=6.2)
         if #available(macOS 26.0, *), let glass = nativeGlass as? NSGlassEffectView {
             glass.cornerRadius = min(bounds.height / 2, expanded ? 26 : 23)
         }
+        #endif
         layoutLabels()
     }
 
@@ -452,6 +458,7 @@ private final class IslandRootView: NSView {
 
     private func applyTransparency() {
         let transparency = min(100, max(10, glassTransparency))
+        #if compiler(>=6.2)
         if #available(macOS 26.0, *), let nativeGlass = nativeGlass as? NSGlassEffectView {
             // Only the explicit material picker changes the glass style.
             // Changing transparency never swaps materials.
@@ -460,6 +467,7 @@ private final class IslandRootView: NSView {
             tint.isHidden = true
             return
         }
+        #endif
         // Older systems keep a single native blur plus an adjustable theme tint.
         surface.alphaValue = 0.35 + CGFloat(1 - transparency / 100) * 0.65
         tint.layer?.opacity = Float(1 - transparency / 100)
